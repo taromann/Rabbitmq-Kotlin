@@ -5,8 +5,8 @@ import com.rabbitmq.client.ConnectionFactory
 
 // Первый вариант, что эксченджер накидывает задачи в очередь, а ресиверы будут выполнять (1 задачу выполнит 1 получатель (конкуренция за задачи))
 
-const val QUEUE_NAME = "hello"
-const val EXCHANGER_NAME = "hello_exchanger"  //создаем обменник
+private const val QUEUE_NAME = "hello"
+private const val EXCHANGER_NAME = "hello_exchanger"  //создаем обменник
 
 fun main() {
     val factory = ConnectionFactory() //открываем соединение
@@ -19,7 +19,7 @@ fun main() {
         connection.createChannel().use {//создаем канал связи
             //exchangeDeclare значит что если такой эксченджер есть то трогать не будем, нет - создадим
             it.exchangeDeclare(EXCHANGER_NAME, BuiltinExchangeType.DIRECT) //задаем тип обменника, и говорим что хотим на сервере создать такой эксченджер
-            //аналогично создаем очередь
+            //аналогично создаем очередь (НА СТОРОНЕ PRODUCERа)
             it.queueDeclare(QUEUE_NAME, false, false, false, null)
             //привязываем эксченджер к очереди (создаем связь с ключем java, т.е. только если будет такой ключ, сообщения будут пролетать )
             it.queueBind(QUEUE_NAME, EXCHANGER_NAME, "java")
