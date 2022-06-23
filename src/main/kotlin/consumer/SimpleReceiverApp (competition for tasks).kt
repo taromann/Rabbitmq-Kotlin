@@ -1,11 +1,11 @@
 package consumer
 
 import com.rabbitmq.client.ConnectionFactory
-import com.rabbitmq.client.Consumer
 import com.rabbitmq.client.DeliverCallback
 import com.rabbitmq.client.Delivery
 import java.nio.charset.Charset
-import java.util.*
+
+// Первый вариант, что эксченджер накидывает задачи в очередь, а ресиверы будут выполнять (1 задачу выполнит 1 получатель (конкуренция за задачи))
 
 const val QUEUE_NAME = "hello"
 
@@ -20,7 +20,7 @@ fun main() {
     // Второй параметр durable - долговечность, значит что при false сли сервер рабит перезапустится, то очереди удаляются. Если tru, то очередь восстановится после перезапуска сервера
     // Третий параметр exclusive: в один момент времени с очередью может работать одно соединение, 2 приложение с такой очередью не смогут работать
     // Четвертый параметр false - autoDelete, значит что очередь живет, пока живет текущее соединение (пока приложение, создавшее очередь, живет)
-    // Если очередь с названием hello есть, то подключается к ней, если нет то создает
+    // Если очередь с названием hello есть, то подключается к ней, если нет, то создает
     chanel.queueDeclare(QUEUE_NAME, false, false, false, null)
     println(" [*] Waiting for messages")
 

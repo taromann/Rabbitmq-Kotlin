@@ -3,10 +3,10 @@ package producer
 import com.rabbitmq.client.BuiltinExchangeType
 import com.rabbitmq.client.ConnectionFactory
 
+// Первый вариант, что эксченджер накидывает задачи в очередь, а ресиверы будут выполнять (1 задачу выполнит 1 получатель (конкуренция за задачи))
+
 const val QUEUE_NAME = "hello"
 const val EXCHANGER_NAME = "hello_exchanger"  //создаем обменник
-
-// docker run -d --hostname my-rabbit --name some-rabbit -p 5672:5672 -p 15672:15672 rabbitmq:3
 
 fun main() {
     val factory = ConnectionFactory() //открываем соединение
